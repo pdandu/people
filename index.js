@@ -8,42 +8,37 @@ const renderColor = (hairColor) => {
   return colorDiv
 }
 
+const renderItem = (name, value) => {
+  const item = document.createElement('li')
+  item.innerHTML = `${name}: ${value}`
+  return item
+}
+
+const renderList = (person) => {
+  const list = document.createElement('ul')
+Array.from(person).map((input, _i, _formElements) => {
+    if (input.value) {
+    const li = renderItem(input.name, input.value)
+    list.appendChild(li)
+   }
+  })
+  return list
+}
+
 const handleSubmit = (ev) => {
   ev.preventDefault()
   const form = ev.target
   const details = document.querySelector('.details')
 
-  const personName = document.createElement ('li')
-  personName.textContent = "Name: " + form.personName.value
-  
-  const hairColor = form.hairColor.value
-  const color = document.createElement ('li')
-  color.textContent = "Hair Color: "
+  const person = {
+    personName: form.personName.value,
+    hairColor: renderColor(form.hairColor.value).outerHTML,
+    age: form.age.value,
+    birthplace: form.birthplace.value,
+  }
 
-  const age = document.createElement ('li')
-  age.textContent = "Age: " + form.age.value 
-
-  const birthplace = document.createElement ('li')
-  birthplace.textContent = "Birthplace: " + form.birthplace.value 
-
-  const colorDiv = renderColor(hairColor)
-
-color.appendChild(colorDiv)
-details.appendChild(personName)
-details.appendChild(color)
-details.appendChild(age)
-details.appendChild(birthplace)
-
- /* details.innerHTML = `
-    <ul>
-      <li>Name: ${personName}</li>
-      <li>Hair Color: ${colorDiv.outerHTML}</li>
-      <li>Age: ${age}</li>
-      <li>Birthplace: ${birthplace}</li>
-    </ul>
-  ` 
-*/
+  const list = renderList(form.elements)
+  details.appendChild(list)
 }
 
 personForm.addEventListener('submit', handleSubmit)
-
